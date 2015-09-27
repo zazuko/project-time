@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    </head>
+    <body>
+        <!-- Add your site or application content here -->
+        <h1 id="hello">Projects</h1>
+        <div id="endpointsForm">
+            SPARQL Query Endpoint: <input id="sparqlQuery" type="text" size="60" value="http://zazukoians.org:3030/projects/query" /><br />
+            SPARQL Update Endpoint: <input id="sparqlUpdate" type="text" size="60" value="http://zazukoians.org:3030/projects/update" /><br />
+            <button id="setEndpoints">Set</button>
+        </div>
+        <div id="endpointsLink" style="display: none">
+            <a id="showEndpointsConfig" href="#">Show SPARQL Endpoints Config</a>
+        </div>
+        <div id="createProjectForm">
+            Project short name (part of IRI): <input id="projectName" type="text" size="10" placeholder="shortname" /><br/>
+            Project title: <input id="projectTitle" type="text" size="60" placeholder="Project Title" /><br/>
+            Planned hours: <input id="projectHours" type="number" step="4" placeholder="Hours" /><br/>
+            <button id="createProject">Create</button>
+        </div>
+        
+        
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+        <script src="js/jquery/jquery.js"></script>
+
+        <script>
+        $(function() {
+            var prefix = "http://example.org/project/";
+            
+            $("#setEndpoints").click(function(e) {
+                $("#endpointsForm").hide();
+                $("#endpointsLink").show();
+            });
+            $("#showEndpointsConfig").click(function(e) {
+                $("#endpointsLink").hide();
+                $("#endpointsForm").show();
+            });
+            $("#createProject").on("click", function() {
+                var projectIRI = prefix+$("#projectName").val();
+                var update = "PREFIX dc: <http://purl.org/dc/elements/1.1/>\n"+
+                        "PREFIX pro: <http://schema.zazukoians.org/projects/>\n"+
+                        "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"+
+                "INSERT DATA\n"+
+                "{ <"+projectIRI+">  rdf:type  pro:Project." +
+                "<"+projectIRI+">  pro:plannedTime  "+$("#projectHours").val()+"." +
+                "<"+projectIRI+"> dc:title  \""+$("#projectTitle").val()+"\" } ";
+                alert(update)
+                jQuery.post($("#sparqlUpdate").val(),{update: update})
+            })
+        });
+        </script>
+    </body>
+</html>
