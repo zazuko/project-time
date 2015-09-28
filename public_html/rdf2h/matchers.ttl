@@ -1,0 +1,46 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix r2h: <http://rdf2h.github.io/2015/rdf2h#> .
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix s: <http://schema.org/>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix pro: <http://schema.zazukoians.org/projects/> .
+
+
+<class> a r2h:Matcher ;
+  r2h:triplePattern [ 
+    r2h:predicate rdf:type;
+    r2h:object r2h:this
+  ];
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache '''
+{{#rdf:type<-}}
+  {{{:render .}}}
+{{/rdf:type<-}}
+    '''
+  ];
+  r2h:before <catchall>.
+
+<project> a r2h:Matcher ;
+  r2h:triplePattern [    
+    r2h:subject r2h:this;
+    r2h:predicate rdf:type;
+    r2h:object pro:Project;
+  ];
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache '''<h3>{{dct:title}}</h3>
+    <p>
+         URI: {{.}}<br/>
+         Planned Hours: {{pro:plannedTime}}
+         {{{:continue}}}
+    </p>'''
+  ];
+  r2h:before <catchall>.
+          
+<catchall> a r2h:Matcher ;
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache "<!-- no (more) template for {{{.}}} -->"
+  ].  

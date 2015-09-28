@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width">
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
-        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <link rel="matchers" href="rdf2h/matchers.ttl">
     </head>
     <body>
         <!-- Add your site or application content here -->
@@ -20,43 +20,26 @@
         <div id="endpointsLink" style="display: none">
             <a id="showEndpointsConfig" href="#">Show SPARQL Endpoints Config</a>
         </div>
+        <h2>Projects</h2>
+        <div class="render" resource="http://schema.zazukoians.org/projects/Project">
+            projects here
+        </div>
         <div id="createProjectForm">
             Project short name (part of IRI): <input id="projectName" type="text" size="10" placeholder="shortname" /><br/>
             Project title: <input id="projectTitle" type="text" size="60" placeholder="Project Title" /><br/>
             Planned hours: <input id="projectHours" type="number" step="4" placeholder="Hours" /><br/>
             <button id="createProject">Create</button>
         </div>
-        
-        
+
         <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
         <script src="js/jquery/jquery.js"></script>
+        <!-- <script src="https://rawgit.com/rdf-ext/rdf-ext-dist/master/dist/rdf-ext.js"></script> -->
+        <script src="http://rdf2h.github.io/rdf2h/dist/rdf2h.js"></script>
+        <script src="http://rdf2h.github.io/ld2h/js/ld2h.js"></script>
+        <script src="js/main.js"></script>
 
         <script>
-        $(function() {
-            var prefix = "http://example.org/project/";
             
-            $("#setEndpoints").click(function(e) {
-                $("#endpointsForm").hide();
-                $("#endpointsLink").show();
-            });
-            $("#showEndpointsConfig").click(function(e) {
-                $("#endpointsLink").hide();
-                $("#endpointsForm").show();
-            });
-            $("#createProject").on("click", function() {
-                var projectIRI = prefix+$("#projectName").val();
-                var update = "PREFIX dc: <http://purl.org/dc/elements/1.1/>\n"+
-                        "PREFIX pro: <http://schema.zazukoians.org/projects/>\n"+
-                        "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"+
-                "INSERT DATA\n"+
-                "{ <"+projectIRI+">  rdf:type  pro:Project." +
-                "<"+projectIRI+">  pro:plannedTime  "+$("#projectHours").val()+"." +
-                "<"+projectIRI+"> dc:title  \""+$("#projectTitle").val()+"\" } ";
-                alert(update)
-                jQuery.post($("#sparqlUpdate").val(),{update: update})
-            })
-        });
         </script>
     </body>
 </html>
