@@ -5,6 +5,7 @@
 @prefix s: <http://schema.org/>.
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix pro: <http://schema.zazukoians.org/projects/> .
+@prefix c: <http://zazuko.com/context#> .
 
 
 <class> a r2h:Matcher ;
@@ -20,6 +21,15 @@
 {{/rdf:type<-}}
     '''
   ];
+  r2h:template [ 
+    r2h:context c:options;
+    r2h:mustache '''
+{{#rdf:type<-}}
+  {{{:render .}}}
+{{/rdf:type<-}}
+    '''
+  ];
+
   r2h:before <catchall>.
 
 <project> a r2h:Matcher ;
@@ -36,6 +46,10 @@
          Planned Hours: {{pro:plannedTime}}
          {{{:continue}}}
     </p>'''
+  ];
+  r2h:template [ 
+    r2h:context c:options;
+    r2h:mustache '''<option value="{{{.}}}">{{dct:title}}</option>'''
   ];
   r2h:before <catchall>.
           
