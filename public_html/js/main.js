@@ -83,8 +83,10 @@ $(function () {
                 "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
                 "INSERT DATA\n" +
                 "{ GRAPH <" + graphname + ">\n" +
-                "{ <" + entryIri + ">  rdf:type  pro:Entry." +
-                "<" + entryIri + ">  pro:spentTime  " + entryHours + "." +
+                "{ <" + entryIri + ">  rdf:type  pro:Entry.\n" +
+                "<" + entryIri + ">  pro:spentTime  " + entryHours + ".\n" +
+                "<" + entryIri + ">  dct:description  \"" + $("#entryDescription").val() + "\" .\n" +
+                "<" + entryIri + ">  pro:project  <" + $("#entryProject").val() + "> .\n" +
                 "<" + entryIri + "> pro:entryDate  \"" + $("#entryDate").val() + "\"^^xsd:date } \n" +
                 "}";
         sparqlUpdate(update);

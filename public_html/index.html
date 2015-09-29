@@ -35,11 +35,10 @@
             Date: <input id="entryDate" type="date" /> Hours: <input id="entryHours" type="number" step="4" placeholder="Hours" /><br/>
             Person: <input id="entryPerson" type="text" size="30" /><br/>
             Description: <input id="entryDescription" type="text" size="60" /><br/>
-            Project: <select  class="render" resource="http://schema.zazukoians.org/projects/Project" context="c:options">
-                <option>Crete Project First!</option>
+            Project: <select  id="entryProject" class="render" resource="http://schema.zazukoians.org/projects/Project" context="c:options">
+                <option>Create Project First!</option>
             </select><br/>
             <button id="reportHours">Report</button>
-            
         </p>
         <script src="js/plugins.js"></script>
         <script src="js/jquery/jquery.js"></script>
@@ -47,6 +46,16 @@
         <script src="http://rdf2h.github.io/rdf2h/dist/rdf2h.js"></script>
         <script src="http://rdf2h.github.io/ld2h/js/ld2h.js"></script>
         <script src="js/main.js"></script>
-
+        
+        
+        <!-- for date and ff -->
+        <script src="http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>
+        <!-- polyfiller file to detect and load polyfills -->
+        <script src="http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js"></script>
+        <script>
+          webshims.setOptions('waitReady', false);
+          webshims.setOptions('forms-ext', {types: 'date'});
+          webshims.polyfill('forms forms-ext');
+        </script>
     </body>
 </html>
