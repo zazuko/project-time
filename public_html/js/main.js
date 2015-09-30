@@ -91,5 +91,20 @@ $(function () {
                 "}";
         sparqlUpdate(update);
     });
+    $("#createPerson").on("click", function () {
+          var update = "PREFIX schema: <http://schema.org/>\
+                PREFIX foaf: <http://xmlns.com/foaf/0.1/>\
+                INSERT DATA\
+                { GRAPH <http://zazuko.com/projects>\
+                 {\
+                    <http://data.zazuko.com/employees/"+ $("#nick").val() + "> a schema:Person, foaf:Person;\
+                      foaf:nick \""+ $("#nick").val() + "\" ;\
+                      schema:givenName \""+ $("#givenName").val() + "\" ;\
+                      schema:familyName \""+ $("#familyName").val() + "\" ;\
+                      schema:email \""+ $("#email").val() + "\" .\
+                  } \
+                }";
+        sparqlUpdate(update);
+    });
     LD2h.expand();
 });
