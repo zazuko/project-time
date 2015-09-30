@@ -46,7 +46,8 @@
         <h2>Report Hours</h2>
         <p id="reportHoursForm">
             Date: <input id="entryDate" type="date" /> Hours: <input id="entryHours" type="number" step="4" placeholder="Hours" /><br/>
-            Person: <input id="entryPerson" type="text" size="30" /><br/>
+            Employee: <select  id="entryPerson" class="render" resource="http://schema.org/Person" context="c:options">
+                <option>Create Employees First!</option></select><br/>
             Description: <input id="entryDescription" type="text" size="60" /><br/>
             Project: <select  id="entryProject" class="render" resource="http://schema.zazukoians.org/projects/Project" context="c:options">
                 <option>Create Project First!</option>

@@ -70,6 +70,10 @@
          {{{:continue}}}
     </p>'''
   ];
+  r2h:template [
+    r2h:context c:options;
+    r2h:mustache '''<option value="{{{.}}}">{{schema:familyName}} {{schema:givenName}}</option>'''
+  ];
   r2h:before <catchall>.
 
 

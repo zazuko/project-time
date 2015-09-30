@@ -87,7 +87,8 @@ $(function () {
                 "<" + entryIri + ">  pro:spentTime  " + entryHours + ".\n" +
                 "<" + entryIri + ">  dct:description  \"" + $("#entryDescription").val() + "\" .\n" +
                 "<" + entryIri + ">  pro:project  <" + $("#entryProject").val() + "> .\n" +
-                "<" + entryIri + "> pro:entryDate  \"" + $("#entryDate").val() + "\"^^xsd:date } \n" +
+                "<" + entryIri + ">  pro:employee  <" + $("#entryPerson").val() + "> .\n" +
+                "<" + entryIri + ">  pro:entryDate  \"" + $("#entryDate").val() + "\"^^xsd:date } \n" +
                 "}";
         sparqlUpdate(update);
     });
