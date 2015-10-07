@@ -3,40 +3,66 @@
 $(function () {
     var prefix = "http://example.org/";
     var graphname = "http://zazuko.com/projects";
-    var store = new rdf.SparqlStore({
-        endpointUrl: $("#sparqlQuery").val(),
-        updateUrl: $("#sparqlUpdate").val() //shouldn't be needed
-    });
+    
 
-    LD2h.getDataGraph = function (callback) {
-        store.graph(graphname, callback); //Caveat: with newer rdf-ext version the callback takes (uri,g)
-    };
+    
     if (localStorage.getItem("sparqlQuery")) {
         $("#sparqlQuery").val(localStorage.getItem("sparqlQuery"));
     }
     if (localStorage.getItem("sparqlUpdate")) {
         $("#sparqlUpdate").val(localStorage.getItem("sparqlUpdate"));
     }
+    if (localStorage.getItem("sparqlUsername")) {
+        $("#sparqlUsername").val(localStorage.getItem("sparqlUsername"));
+    }
+    if (localStorage.getItem("sparqlPassword")) {
+        $("#sparqlPassword").val(localStorage.getItem("sparqlPassword"));
+    }
     $("#setEndpoints").click(function (e) {
         localStorage.setItem("sparqlQuery", $("#sparqlQuery").val());
         localStorage.setItem("sparqlUpdate", $("#sparqlUpdate").val());
+        localStorage.setItem("sparqlUsername", $("#sparqlUsername").val());
+        localStorage.setItem("sparqlPassword", $("#sparqlPassword").val());
         $("#endpointsForm").hide();
         $("#endpointsLink").show();
         $("#main").show();
-    
+        //var origDefaultRequest = rdf.defaultRequest;
+        var basicAuthHeaderValue = "Basic " + btoa($("#sparqlUsername").val() + ":" + $("#sparqlPassword").val());
+        var store = new rdf.SparqlStore({
+                endpointUrl: $("#sparqlQuery").val(),
+                updateUrl: $("#sparqlUpdate").val(), //shouldn't be needed
+                request: function(method, requestUrl, headers, content, callback) {
+                    var newHeaders = headers || {};
+                    newHeaders["Authorization"] = basicAuthHeaderValue;
+                    rdf.defaultRequest(method, requestUrl, headers, content, callback);
+                }
+            });
+        LD2h.getDataGraph = function (callback) {
+            store.graph(graphname, callback); //Caveat: with newer rdf-ext version the callback takes (uri,g)
+        };
         $("#showEndpointsConfig").click(function (e) {
-            $("#endpointsLink").hide();
-            $("#endpointsForm").show();
+            window.location.reload();
         });
         var sparqlUpdate = function(update) {
-            jQuery.post($("#sparqlUpdate").val(), {update: update})
-                    .done(function () {
+            jQuery.ajax(
+                    { type: "POST",
+                      url: $("#sparqlUpdate").val(), 
+                      async: false,
+                      headers: {
+                          "Authorization": basicAuthHeaderValue
+                      },
+                      data: {update: update}
+                  }).done(function () {
                         console.log("successfully updated");
                         window.location.reload();
                     })
                     .fail(function (e) {
+                        if (e.status === 401) {
+                            alert("Authentication failed, check you username and password in the SPARQL Endpoint Config");
+                        } else {
+                            alert("error (see console for details)");
+                        }
                         console.log("error with query " + update, e);
-                        alert("error (see console for details)");
                     });
         }
         $("#createProject").on("click", function () {
