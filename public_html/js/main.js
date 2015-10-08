@@ -1,11 +1,11 @@
 /* global LD2h, rdf */
 
 $(function () {
+    //by default of the html the config-sections are visible
+    //the enableMainSection function switches to the main section
     var prefix = "http://example.org/";
     var graphname = "http://zazuko.com/projects";
-    
-
-    
+        
     if (localStorage.getItem("sparqlQuery")) {
         $("#sparqlQuery").val(localStorage.getItem("sparqlQuery"));
     }
@@ -18,15 +18,10 @@ $(function () {
     if (localStorage.getItem("sparqlPassword")) {
         $("#sparqlPassword").val(localStorage.getItem("sparqlPassword"));
     }
-    $("#setEndpoints").click(function (e) {
-        localStorage.setItem("sparqlQuery", $("#sparqlQuery").val());
-        localStorage.setItem("sparqlUpdate", $("#sparqlUpdate").val());
-        localStorage.setItem("sparqlUsername", $("#sparqlUsername").val());
-        localStorage.setItem("sparqlPassword", $("#sparqlPassword").val());
+    var showMain = function() {    
         $("#endpointsForm").hide();
         $("#endpointsLink").show();
         $("#main").show();
-        //var origDefaultRequest = rdf.defaultRequest;
         var basicAuthHeaderValue = "Basic " + btoa($("#sparqlUsername").val() + ":" + $("#sparqlPassword").val());
         var store = new rdf.SparqlStore({
                 endpointUrl: $("#sparqlQuery").val(),
@@ -41,6 +36,7 @@ $(function () {
             store.graph(graphname, callback); //Caveat: with newer rdf-ext version the callback takes (uri,g)
         };
         $("#showEndpointsConfig").click(function (e) {
+            localStorage.setItem("endPointsSet", false);
             window.location.reload();
         });
         var sparqlUpdate = function(update) {
@@ -64,7 +60,7 @@ $(function () {
                         }
                         console.log("error with query " + update, e);
                     });
-        }
+        };
         $("#createProject").on("click", function () {
             var projectTitle = $("#projectTitle").val();
             if (projectTitle.length < 4) {
@@ -143,6 +139,17 @@ $(function () {
             sparqlUpdate(update);
         });
         LD2h.expand();
-
+    };
+    //be compatibel also with old er browsers that convert everything in localStore to String
+    if (localStorage.getItem("endPointsSet") && localStorage.getItem("endPointsSet").toString() === "true") {
+        showMain();
+    }    
+    $("#setEndpoints").click(function (e) {
+        localStorage.setItem("sparqlQuery", $("#sparqlQuery").val());
+        localStorage.setItem("sparqlUpdate", $("#sparqlUpdate").val());
+        localStorage.setItem("sparqlUsername", $("#sparqlUsername").val());
+        localStorage.setItem("sparqlPassword", $("#sparqlPassword").val());
+        localStorage.setItem("endPointsSet", true);
+        showMain();
     });
 });
