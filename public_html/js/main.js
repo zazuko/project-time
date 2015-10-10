@@ -3,7 +3,7 @@
 $(function () {
     //by default of the html the config-sections are visible
     //the enableMainSection function switches to the main section
-    var prefix = "http://example.org/";
+    var prefix = "https://data.zazuko.com/";
     var graphname = "http://zazuko.com/projects";
         
     if (localStorage.getItem("sparqlQuery")) {
@@ -83,11 +83,12 @@ $(function () {
             }
             var projectIRI = prefix + "project/"+shortName;
             var update = "PREFIX dct: <http://purl.org/dc/terms/>\n" +
-                    "PREFIX pro: <http://schema.zazukoians.org/projects/>\n" +
+                    "PREFIX pro: <http://schema.zazuko.com/work/>\n" +
+                    "PREFIX doap: <http://usefulinc.com/ns/doap#>\n" +
                     "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
                     "INSERT DATA\n" +
                     "{ GRAPH <" + graphname + ">\n" +
-                    "{ <" + projectIRI + ">  rdf:type  pro:Project." +
+                    "{ <" + projectIRI + ">  rdf:type  doap:Project." +
                     "<" + projectIRI + ">  pro:plannedTime  " + projectHours + "." +
                     "<" + projectIRI + "> dct:title  \"" + projectTitle + "\" } \n" +
                     "}";
@@ -110,7 +111,7 @@ $(function () {
             }
             var entryIri = prefix+"entry/"+makeid();
             var update = "PREFIX dct: <http://purl.org/dc/terms/>\n" +
-                    "PREFIX pro: <http://schema.zazukoians.org/projects/>\n" +
+                    "PREFIX pro: <http://schema.zazuko.com/work/>\n" +
                     "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
                     "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
                     "INSERT DATA\n" +
@@ -125,7 +126,7 @@ $(function () {
             sparqlUpdate(update);
         });
         $("#createPerson").on("click", function () {
-            var personIri = prefix+"employees/"+ $("#nick").val();
+            var personIri = prefix+"people/"+ $("#nick").val();
             var update = "PREFIX schema: <http://schema.org/>\n" +
                     "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n" +
                     "INSERT DATA\n" +
