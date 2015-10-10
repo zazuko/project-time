@@ -22,13 +22,20 @@ $(function () {
         $("#endpointsForm").hide();
         $("#endpointsLink").show();
         $("#main").show();
-        var basicAuthHeaderValue = "Basic " + btoa($("#sparqlUsername").val() + ":" + $("#sparqlPassword").val());
+        var userName = $("#sparqlUsername").val();
+        if (userName.length > 0) {
+            var basicAuthHeaderValue = "Basic " + btoa(userName + ":" + $("#sparqlPassword").val());
+        } else {
+            var basicAuthHeaderValue = undefined;
+        }
         var store = new rdf.SparqlStore({
                 endpointUrl: $("#sparqlQuery").val(),
                 updateUrl: $("#sparqlUpdate").val(), //shouldn't be needed
                 request: function(method, requestUrl, headers, content, callback) {
                     var newHeaders = headers || {};
-                    newHeaders["Authorization"] = basicAuthHeaderValue;
+                    if (basicAuthHeaderValue) {
+                        newHeaders["Authorization"] = basicAuthHeaderValue;
+                    }
                     rdf.defaultRequest(method, requestUrl, headers, content, callback);
                 }
             });
@@ -45,9 +52,9 @@ $(function () {
                     { type: "POST",
                       url: $("#sparqlUpdate").val(), 
                       async: false,
-                      headers: {
+                      headers: $.extend({},{
                           "Authorization": basicAuthHeaderValue
-                      },
+                      }),
                       data: {update: update}
                   }).done(function () {
                         console.log("successfully updated");
