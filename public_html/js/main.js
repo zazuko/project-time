@@ -128,7 +128,15 @@ $(function () {
         $("#createPerson").on("click", function () {
             var personIri = prefix+"people/"+ $("#nick").val();
             var nick = $("#nick").val();
-            if ((typeof allNicks != 'undefined') && (allNicks.indexOf(nick) > -1)) {
+            if( /[^a-zA-Z0-9]/.test(nick) ) {
+                alert('Nick contains invalid character');
+                return;
+             }
+            if (nick.length < 3) {
+                alert("Nick must be at least 3 chars");
+                return;
+            }
+            if ((typeof allNicks !== 'undefined') && (allNicks.indexOf(nick) > -1)) {
                 alert("Nick already in use");
                 return;
             }
