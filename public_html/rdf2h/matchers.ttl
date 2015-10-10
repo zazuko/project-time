@@ -64,7 +64,13 @@
   ];
   r2h:template [ 
     r2h:context r2h:Default;
-    r2h:mustache '''<h3>{{schema:givenName}} {{schema:familyName}}</h3>
+    r2h:mustache '''<h3>{{schema:givenName}} {{schema:familyName}} ({{foaf:nick}})</h3>
+    <script>
+        if (typeof allNicks == 'undefined') {
+            allNicks = [];
+        }
+        allNicks.push("{{foaf:nick}}");
+    </script>
     <p>
          Email: {{schema:email}}
          {{{:continue}}}

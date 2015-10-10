@@ -1,4 +1,4 @@
-/* global LD2h, rdf */
+/* global LD2h, rdf, allNicks */
 
 $(function () {
     //by default of the html the config-sections are visible
@@ -127,13 +127,18 @@ $(function () {
         });
         $("#createPerson").on("click", function () {
             var personIri = prefix+"people/"+ $("#nick").val();
+            var nick = $("#nick").val();
+            if ((typeof allNicks != 'undefined') && (allNicks.indexOf(nick) > -1)) {
+                alert("Nick already in use");
+                return;
+            }
             var update = "PREFIX schema: <http://schema.org/>\n" +
                     "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n" +
                     "INSERT DATA\n" +
                     "{ GRAPH <" + graphname + ">\n" +
                         "{\n" +
                             "<"+personIri + "> a schema:Person, foaf:Person;\n" +
-                            "  foaf:nick \""+ $("#nick").val() + "\" ;\n" +
+                            "  foaf:nick \""+ nick + "\" ;\n" +
                             "  schema:givenName \""+ $("#givenName").val() + "\" ;\n" +
                             "  schema:familyName \""+ $("#familyName").val() + "\" ;\n" +
                             "  schema:email \""+ $("#email").val() + "\" .\n" +
