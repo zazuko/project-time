@@ -38,6 +38,7 @@ $(function () {
         $("#showEndpointsConfig").click(function (e) {
             localStorage.setItem("endPointsSet", false);
             window.location.reload();
+            return false;
         });
         var sparqlUpdate = function(update) {
             jQuery.ajax(
@@ -124,18 +125,19 @@ $(function () {
             sparqlUpdate(update);
         });
         $("#createPerson").on("click", function () {
-              var update = "PREFIX schema: <http://schema.org/>\
-                    PREFIX foaf: <http://xmlns.com/foaf/0.1/>\
-                    INSERT DATA\
-                    { GRAPH <http://zazuko.com/projects>\
-                     {\
-                        <http://data.zazuko.com/employees/"+ $("#nick").val() + "> a schema:Person, foaf:Person;\
-                          foaf:nick \""+ $("#nick").val() + "\" ;\
-                          schema:givenName \""+ $("#givenName").val() + "\" ;\
-                          schema:familyName \""+ $("#familyName").val() + "\" ;\
-                          schema:email \""+ $("#email").val() + "\" .\
-                      } \
-                    }";
+            var personIri = prefix+"employees/"+ $("#nick").val();
+            var update = "PREFIX schema: <http://schema.org/>\n" +
+                    "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n" +
+                    "INSERT DATA\n" +
+                    "{ GRAPH <" + graphname + ">\n" +
+                        "{\n" +
+                            "<"+personIri + "> a schema:Person, foaf:Person;\n" +
+                            "  foaf:nick \""+ $("#nick").val() + "\" ;\n" +
+                            "  schema:givenName \""+ $("#givenName").val() + "\" ;\n" +
+                            "  schema:familyName \""+ $("#familyName").val() + "\" ;\n" +
+                            "  schema:email \""+ $("#email").val() + "\" .\n" +
+                        "}\n" +
+                    "}";
             sparqlUpdate(update);
         });
         LD2h.expand();
