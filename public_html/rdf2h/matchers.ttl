@@ -7,7 +7,7 @@
 @prefix pro: <http://schema.zazuko.com/work/> .
 @prefix c: <http://zazuko.com/context#> .
 @prefix schema: <http://schema.org/>.
-@prefix doap: <http://usefulinc.com/ns/doap#Project> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
 
 
 
