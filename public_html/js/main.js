@@ -42,7 +42,7 @@ $(function () {
         LD2h.getDataGraph = function (callback) {
             store.graph(graphname, function(uri, g) {
                 callback(g);
-            }); //Caveat: with newer rdf-ext version the callback takes (uri,g)
+            });
         };
         $("#showEndpointsConfig").click(function (e) {
             localStorage.setItem("endPointsSet", false);
