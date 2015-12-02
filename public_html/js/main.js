@@ -28,7 +28,7 @@ $(function () {
         } else {
             var basicAuthHeaderValue = undefined;
         }
-        var store = new rdf.SparqlStore({
+        var store = new SparqlStore({
                 endpointUrl: $("#sparqlQuery").val(),
                 updateUrl: $("#sparqlUpdate").val(), //shouldn't be needed
                 request: function(method, requestUrl, headers, content, callback) {
@@ -40,7 +40,9 @@ $(function () {
                 }
             });
         LD2h.getDataGraph = function (callback) {
-            store.graph(graphname, callback); //Caveat: with newer rdf-ext version the callback takes (uri,g)
+            store.graph(graphname, function(uri, g) {
+                callback(g);
+            }); //Caveat: with newer rdf-ext version the callback takes (uri,g)
         };
         $("#showEndpointsConfig").click(function (e) {
             localStorage.setItem("endPointsSet", false);
