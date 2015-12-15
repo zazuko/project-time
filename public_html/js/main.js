@@ -36,7 +36,7 @@ $(function () {
                     if (basicAuthHeaderValue) {
                         newHeaders["Authorization"] = basicAuthHeaderValue;
                     }
-                    rdf.defaultRequest(method, requestUrl, headers, content, callback);
+                    return rdf.defaultRequest(method, requestUrl, headers, content, callback);
                 }
             });
         LD2h.getDataGraph = function (callback) {
